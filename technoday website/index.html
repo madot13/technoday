@@ -1,0 +1,1031 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>TECHNODAY — 06.05.2026</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Orbitron:wght@700;900&display=swap"
+            rel="stylesheet" />
+        <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+        <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+        <style>
+            *,
+            *::before,
+            *::after {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                background: #000;
+                color: #e0ffe0;
+                font-family: "JetBrains Mono", monospace;
+                overflow-x: hidden;
+            }
+
+            /* ── Animations ── */
+            @keyframes glitch1 {
+                0%,
+                100% {
+                    clip-path: inset(0 0 95% 0);
+                    transform: translate(-4px, 0);
+                }
+                20% {
+                    clip-path: inset(20% 0 60% 0);
+                    transform: translate(4px, 0);
+                }
+                40% {
+                    clip-path: inset(50% 0 30% 0);
+                    transform: translate(-2px, 0);
+                }
+                60% {
+                    clip-path: inset(75% 0 5% 0);
+                    transform: translate(3px, 0);
+                }
+                80% {
+                    clip-path: inset(10% 0 80% 0);
+                    transform: translate(-3px, 0);
+                }
+            }
+            @keyframes glitch2 {
+                0%,
+                100% {
+                    clip-path: inset(80% 0 5% 0);
+                    transform: translate(4px, 0);
+                }
+                20% {
+                    clip-path: inset(40% 0 40% 0);
+                    transform: translate(-4px, 0);
+                }
+                40% {
+                    clip-path: inset(5% 0 85% 0);
+                    transform: translate(2px, 0);
+                }
+                60% {
+                    clip-path: inset(60% 0 20% 0);
+                    transform: translate(-3px, 0);
+                }
+                80% {
+                    clip-path: inset(30% 0 55% 0);
+                    transform: translate(4px, 0);
+                }
+            }
+            @keyframes breatheLime {
+                0%,
+                100% {
+                    box-shadow:
+                        0 0 6px #c8ff00,
+                        0 0 12px #c8ff0044,
+                        inset 0 0 6px #c8ff0022;
+                    border-color: #c8ff0044;
+                }
+                50% {
+                    box-shadow:
+                        0 0 16px #c8ff00,
+                        0 0 32px #c8ff0077,
+                        inset 0 0 14px #c8ff0033;
+                    border-color: #c8ff0088;
+                }
+            }
+            @keyframes breatheCyan {
+                0%,
+                100% {
+                    box-shadow:
+                        0 0 6px #00ffff,
+                        0 0 12px #00ffff44,
+                        inset 0 0 6px #00ffff22;
+                    border-color: #00ffff44;
+                }
+                50% {
+                    box-shadow:
+                        0 0 16px #00ffff,
+                        0 0 32px #00ffff77,
+                        inset 0 0 14px #00ffff33;
+                    border-color: #00ffff88;
+                }
+            }
+            @keyframes scanPulse {
+                0%,
+                100% {
+                    opacity: 0.035;
+                }
+                50% {
+                    opacity: 0.065;
+                }
+            }
+            @keyframes blink {
+                0%,
+                49% {
+                    opacity: 1;
+                }
+                50%,
+                100% {
+                    opacity: 0;
+                }
+            }
+            @keyframes progressFill {
+                from {
+                    width: 0%;
+                }
+                to {
+                    width: var(--target-w, 100%);
+                }
+            }
+            @keyframes fadeSlideUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            @keyframes lockPulse {
+                0%,
+                100% {
+                    color: #ff4444;
+                }
+                50% {
+                    color: #ff8888;
+                }
+            }
+            @keyframes floatDot {
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+                50% {
+                    transform: translateY(-6px);
+                }
+            }
+            @keyframes borderTrace {
+                0% {
+                    background-position: 0% 0%;
+                }
+                100% {
+                    background-position: 200% 0%;
+                }
+            }
+
+            /* ── Global ── */
+            .scanlines {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 9999;
+                background: repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 0, 0, 0.07) 2px,
+                    rgba(0, 0, 0, 0.07) 4px
+                );
+                animation: scanPulse 3s ease-in-out infinite;
+            }
+
+            .grid-bg {
+                background-color: #000;
+                background-image:
+                    linear-gradient(
+                        rgba(200, 255, 0, 0.035) 1px,
+                        transparent 1px
+                    ),
+                    linear-gradient(
+                        90deg,
+                        rgba(200, 255, 0, 0.035) 1px,
+                        transparent 1px
+                    );
+                background-size: 36px 36px;
+            }
+
+            /* ── Crosshair corners ── */
+            .corners {
+                position: absolute;
+                inset: 0;
+                pointer-events: none;
+            }
+            .corners span {
+                position: absolute;
+                width: 16px;
+                height: 16px;
+                opacity: 0.45;
+            }
+            .corners span:nth-child(1) {
+                top: 10px;
+                left: 10px;
+                border-top: 1px solid var(--cc, #c8ff00);
+                border-left: 1px solid var(--cc, #c8ff00);
+            }
+            .corners span:nth-child(2) {
+                top: 10px;
+                right: 10px;
+                border-top: 1px solid var(--cc, #c8ff00);
+                border-right: 1px solid var(--cc, #c8ff00);
+            }
+            .corners span:nth-child(3) {
+                bottom: 10px;
+                left: 10px;
+                border-bottom: 1px solid var(--cc, #c8ff00);
+                border-left: 1px solid var(--cc, #c8ff00);
+            }
+            .corners span:nth-child(4) {
+                bottom: 10px;
+                right: 10px;
+                border-bottom: 1px solid var(--cc, #c8ff00);
+                border-right: 1px solid var(--cc, #c8ff00);
+            }
+
+            /* ── Glitch title ── */
+            .glitch-wrap {
+                position: relative;
+                display: inline-block;
+            }
+            .glitch-wrap::before {
+                content: attr(data-text);
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                color: #00ffff;
+                animation: glitch1 2.6s infinite steps(1);
+                z-index: 1;
+            }
+            .glitch-wrap::after {
+                content: attr(data-text);
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                color: #ff00aa;
+                animation: glitch2 2.6s infinite steps(1);
+                z-index: 1;
+            }
+
+            /* ── Typography helpers ── */
+            .neon-text {
+                color: #c8ff00;
+                text-shadow: 0 0 10px #c8ff0077;
+            }
+            .cyan-text {
+                color: #00ffff;
+                text-shadow: 0 0 10px #00ffff77;
+            }
+            .dim-text {
+                color: #444;
+            }
+            .mono {
+                font-family: "JetBrains Mono", monospace;
+            }
+            .orbitron {
+                font-family: "Orbitron", monospace;
+            }
+
+            /* ── Tags / pills ── */
+            .tag {
+                display: inline-block;
+                font-family: "JetBrains Mono", monospace;
+                font-size: 9px;
+                font-weight: 500;
+                letter-spacing: 0.1em;
+                padding: 2px 8px;
+                border: 1px solid;
+            }
+            .tag-lime {
+                border-color: #c8ff0055;
+                color: #c8ff00;
+            }
+            .tag-cyan {
+                border-color: #00ffff55;
+                color: #00ffff;
+            }
+            .tag-red {
+                border-color: #ff444455;
+                color: #ff6666;
+            }
+            .tag-gray {
+                border-color: #33333388;
+                color: #555;
+            }
+
+            /* ── Module cards ── */
+            .module-card {
+                background: #050505;
+                border: 1px solid #c8ff0030;
+                position: relative;
+                overflow: hidden;
+                padding: 32px 28px;
+            }
+            .module-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 1px;
+                background: linear-gradient(
+                    90deg,
+                    transparent 0%,
+                    #c8ff00 50%,
+                    transparent 100%
+                );
+                opacity: 0.7;
+            }
+            .module-card.cyan-variant {
+                border-color: #00ffff30;
+            }
+            .module-card.cyan-variant::before {
+                background: linear-gradient(
+                    90deg,
+                    transparent 0%,
+                    #00ffff 50%,
+                    transparent 100%
+                );
+            }
+
+            /* ── XP badges ── */
+            .xp-badge {
+                display: inline-block;
+                font-family: "JetBrains Mono", monospace;
+                font-size: 10px;
+                padding: 3px 10px;
+                background: #c8ff0010;
+                border: 1px solid #c8ff0040;
+                color: #c8ff00;
+            }
+            .xp-badge.cyan {
+                background: #00ffff10;
+                border-color: #00ffff40;
+                color: #00ffff;
+            }
+
+            /* ── Locked buttons ── */
+            .locked-btn {
+                width: 100%;
+                padding: 13px 20px;
+                background: #080808;
+                cursor: not-allowed;
+                font-family: "JetBrains Mono", monospace;
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: 0.06em;
+                border: 1px solid #2a2a2a;
+                color: #444;
+                text-align: center;
+                animation: breatheLime 2.8s ease-in-out infinite;
+                transition: color 0.2s;
+            }
+            .locked-btn:hover {
+                color: #c8ff0088;
+            }
+            .locked-btn.cyan-variant {
+                animation: breatheCyan 2.8s ease-in-out infinite;
+            }
+            .locked-btn.cyan-variant:hover {
+                color: #00ffff88;
+            }
+
+            /* ── Difficulty bar ── */
+            .diff-bar-track {
+                flex: 1;
+                height: 5px;
+                background: #111;
+                overflow: hidden;
+            }
+            .diff-bar-fill {
+                height: 100%;
+                background: linear-gradient(90deg, #c8ff00, #aaff00);
+                animation: progressFill 1.6s cubic-bezier(0.4, 0, 0.2, 1) both;
+                animation-delay: 0.4s;
+            }
+            .diff-bar-fill.cyan {
+                background: linear-gradient(90deg, #00ffff, #0099ff);
+            }
+
+            /* ── Timeline ── */
+            .timeline-track {
+                height: 3px;
+                background: #0d0d0d;
+                margin-bottom: 40px;
+                position: relative;
+            }
+            .timeline-progress {
+                height: 100%;
+                background: linear-gradient(90deg, #c8ff00, #c8ff0044);
+                width: 42%;
+            }
+            .timeline-cursor {
+                position: absolute;
+                top: 50%;
+                left: 42%;
+                transform: translate(-50%, -50%);
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background: #c8ff00;
+                box-shadow:
+                    0 0 12px #c8ff00,
+                    0 0 24px #c8ff0066;
+                animation: floatDot 2s ease-in-out infinite;
+            }
+
+            /* ── Section fade-in ── */
+            .fade-in {
+                animation: fadeSlideUp 0.7s ease-out both;
+            }
+
+            /* ── Dividers ── */
+            .section-header-row {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                margin-bottom: 32px;
+            }
+            .section-header-row .line {
+                flex: 1;
+                height: 1px;
+                background: linear-gradient(90deg, #c8ff0033, transparent);
+            }
+            .section-num {
+                font-family: "JetBrains Mono", monospace;
+                font-size: 10px;
+                color: #333;
+                letter-spacing: 0.22em;
+            }
+            .section-status {
+                font-family: "JetBrains Mono", monospace;
+                font-size: 10px;
+                letter-spacing: 0.2em;
+                color: #c8ff00;
+                text-shadow: 0 0 8px #c8ff0055;
+            }
+
+            /* ── Scrollbar ── */
+            ::-webkit-scrollbar {
+                width: 4px;
+            }
+            ::-webkit-scrollbar-track {
+                background: #000;
+            }
+            ::-webkit-scrollbar-thumb {
+                background: #c8ff0033;
+                border-radius: 2px;
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                background: #c8ff0066;
+            }
+
+            /* ── Responsive ── */
+            @media (max-width: 600px) {
+                .challenges-grid {
+                    grid-template-columns: 1fr !important;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="root"></div>
+
+        <script type="text/babel">
+            const { useState, useEffect, useRef } = React;
+
+            /* ─────────────────────────────────────────
+               Sub-components
+            ───────────────────────────────────────── */
+
+            function Scanlines() {
+                return <div className="scanlines" aria-hidden="true" />;
+            }
+
+            function Corners({ color = "#c8ff00" }) {
+                return (
+                    <div
+                        className="corners"
+                        aria-hidden="true"
+                        style={{ "--cc": color }}>
+                        <span />
+                        <span />
+                        <span />
+                        <span />
+                    </div>
+                );
+            }
+
+            /* Digital clock showing 06 : 05 : 2026 */
+            function DigitBlock({ value, label }) {
+                return (
+                    <div style={{ textAlign: "center" }}>
+                        <div
+                            style={{
+                                fontFamily: "'Orbitron', monospace",
+                                fontWeight: 900,
+                                fontSize: "clamp(36px, 7vw, 88px)",
+                                color: "#c8ff00",
+                                textShadow:
+                                    "0 0 24px #c8ff0099, 0 0 48px #c8ff0033",
+                                letterSpacing: "0.04em",
+                                lineHeight: 1,
+                                minWidth: "2ch",
+                                display: "inline-block",
+                            }}>
+                            {value}
+                        </div>
+                        <div
+                            style={{
+                                fontFamily: "'JetBrains Mono', monospace",
+                                fontSize: "9px",
+                                color: "#444",
+                                letterSpacing: "0.2em",
+                                marginTop: "6px",
+                            }}>
+                            {label}
+                        </div>
+                    </div>
+                );
+            }
+
+            function DigitalClock() {
+                return (
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "12px",
+                            margin: "28px 0 10px",
+                        }}>
+                        <DigitBlock value="06" label="DAY" />
+                        <span
+                            style={{
+                                fontFamily: "'Orbitron', monospace",
+                                fontWeight: 900,
+                                fontSize: "clamp(30px, 5vw, 72px)",
+                                color: "#c8ff00",
+                                animation: "blink 1s step-end infinite",
+                                textShadow: "0 0 16px #c8ff0099",
+                                marginBottom: "18px",
+                            }}>
+                            :
+                        </span>
+                        <DigitBlock value="05" label="MONTH" />
+                        <span
+                            style={{
+                                fontFamily: "'Orbitron', monospace",
+                                fontWeight: 900,
+                                fontSize: "clamp(30px, 5vw, 72px)",
+                                color: "#c8ff00",
+                                animation: "blink 1s step-end infinite",
+                                textShadow: "0 0 16px #c8ff0099",
+                                marginBottom: "18px",
+                            }}>
+                            :
+                        </span>
+                        <DigitBlock value="2026" label="YEAR" />
+                    </div>
+                );
+            }
+
+            function DifficultyBar({ level, max = 5, cyan = false }) {
+                return (
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            marginTop: "12px",
+                        }}>
+                        <span
+                            style={{
+                                fontFamily: "'JetBrains Mono', monospace",
+                                fontSize: "9px",
+                                color: "#444",
+                                letterSpacing: "0.12em",
+                                minWidth: "68px",
+                            }}>
+                            DIFFICULTY
+                        </span>
+                        <div className="diff-bar-track">
+                            <div
+                                className={`diff-bar-fill${cyan ? " cyan" : ""}`}
+                                style={{
+                                    "--target-w": `${(level / max) * 100}%`,
+                                }}
+                            />
+                        </div>
+                        <div style={{ display: "flex", gap: "3px" }}>
+                            {Array.from({ length: max }, (_, i) => (
+                                <div
+                                    key={i}
+                                    style={{
+                                        width: "6px",
+                                        height: "6px",
+                                        background:
+                                            i < level
+                                                ? cyan
+                                                    ? "#00ffff"
+                                                    : "#c8ff00"
+                                                : "#1a1a1a",
+                                        boxShadow:
+                                            i < level
+                                                ? `0 0 4px ${cyan ? "#00ffff" : "#c8ff00"}`
+                                                : "none",
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    </div>
+                );
+            }
+
+            function ModuleLabel({ id, status, cyan = false }) {
+                return (
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                            marginBottom: "6px",
+                        }}>
+                        <span
+                            style={{
+                                fontFamily: "'JetBrains Mono', monospace",
+                                fontSize: "9px",
+                                color: "#2a2a2a",
+                                letterSpacing: "0.18em",
+                            }}>
+                            MODULE::{id}
+                        </span>
+                        <div
+                            style={{
+                                flex: 1,
+                                height: "1px",
+                                background: cyan ? "#00ffff1a" : "#c8ff001a",
+                            }}
+                        />
+                        <span
+                            className={`tag ${cyan ? "tag-cyan" : "tag-lime"}`}>
+                            {status}
+                        </span>
+                    </div>
+                );
+            }
+
+            function LockedButton({ cyan = false }) {
+                return (
+                    <div style={{ marginTop: "24px" }}>
+                        <div
+                            style={{
+                                fontFamily: "'JetBrains Mono', monospace",
+                                fontSize: "9px",
+                                color: "#2e2e2e",
+                                letterSpacing: "0.15em",
+                                marginBottom: "8px",
+                            }}>
+                            REGISTRATION::PORTAL
+                        </div>
+                        <button
+                            className={`locked-btn${cyan ? " cyan-variant" : ""}`}
+                            disabled>
+                            <span
+                                style={{
+                                    marginRight: "8px",
+                                    animation:
+                                        "lockPulse 1.6s ease-in-out infinite",
+                                    display: "inline-block",
+                                    fontSize: "12px",
+                                }}>
+                                ⬡
+                            </span>
+                            [ ACCESS_DENIED: FORM_OFFLINE ]
+                        </button>
+                    </div>
+                );
+            }
+
+            const TIMELINE_ITEMS = [
+                {
+                    label: "REGISTRATION_OPEN",
+                    date: "01.05",
+                    status: "complete",
+                    pct: 100,
+                },
+                {
+                    label: "FORM_SUBMISSION",
+                    date: "03.05",
+                    status: "complete",
+                    pct: 100,
+                },
+                {
+                    label: "TEAM_CONFIRMATION",
+                    date: "05.05",
+                    status: "active",
+                    pct: 50,
+                },
+                {
+                    label: "TECHNODAY_6_DEPLOY",
+                    date: "06.05",
+                    status: "locked",
+                    pct: 0,
+                },
+                {
+                    label: "RESULTS_BROADCAST",
+                    date: "06.05",
+                    status: "locked",
+                    pct: 0,
+                },
+            ];
+
+            /* ─────────────────────────────────────────
+               Main Page
+            ───────────────────────────────────────── */
+
+            function App() {
+                return (
+                    <div className="grid-bg" style={{ minHeight: "100vh" }}>
+                        <Scanlines />
+
+                        {/* ══ HERO ══════════════════════════════════════════════ */}
+                        <section
+                            style={{
+                                position: "relative",
+                                padding:
+                                    "clamp(48px, 9vw, 110px) clamp(20px, 6vw, 80px) clamp(40px, 6vw, 72px)",
+                                textAlign: "center",
+                                borderBottom: "1px solid #c8ff0018",
+                                overflow: "hidden",
+                            }}>
+                            <Corners color="#c8ff00" />
+
+                            <div
+                                aria-hidden="true"
+                                style={{
+                                    position: "absolute",
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    background:
+                                        "radial-gradient(ellipse 70% 55% at 50% 20%, #c8ff000c, transparent)",
+                                    pointerEvents: "none",
+                                }}
+                            />
+
+                            {/* Badges */}
+                            <div
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    gap: "10px",
+                                    flexWrap: "wrap",
+                                    marginBottom: "24px",
+                                }}>
+                                <span className="tag tag-red">
+                                    STATUS::OFFLINE
+                                </span>
+                                <span className="tag tag-cyan">
+                                    LOCATION::SDU_UNIVERSITY
+                                </span>
+                            </div>
+
+                            {/* THE MISSING HERO TEXT IS BACK HERE */}
+                            <div
+                                className="glitch-wrap fade-in"
+                                data-text="TECHNODAY 6"
+                                style={{ display: "inline-block" }}>
+                                <h1
+                                    style={{
+                                        fontFamily: "'Orbitron', monospace",
+                                        fontWeight: 900,
+                                        fontSize: "clamp(52px, 11vw, 132px)",
+                                        color: "#c8ff00",
+                                        lineHeight: 1,
+                                        textShadow: "0 0 40px #c8ff0066",
+                                        position: "relative",
+                                        zIndex: 2,
+                                    }}>
+                                    TECHNODAY 6
+                                </h1>
+                            </div>
+
+                            <DigitalClock />
+                        </section>
+
+                        {/* ══ CHALLENGES ════════════════════════════════════════ */}
+                        <section
+                            style={{
+                                padding:
+                                    "clamp(40px, 6vw, 80px) clamp(20px, 6vw, 80px)",
+                                borderBottom: "1px solid #c8ff0010",
+                            }}>
+                            <div
+                                style={{
+                                    maxWidth: "1020px",
+                                    margin: "0 auto",
+                                }}>
+                                <h2
+                                    style={{
+                                        fontFamily: "'Orbitron', monospace",
+                                        fontWeight: 700,
+                                        fontSize: "clamp(24px, 4.5vw, 50px)",
+                                        color: "#e0e0e0",
+                                        marginBottom: "36px",
+                                        letterSpacing: "0.04em",
+                                    }}>
+                                    {"> SELECT "}
+                                    <span className="neon-text">MISSION</span>
+                                </h2>
+
+                                <div
+                                    className="challenges-grid"
+                                    style={{
+                                        display: "grid",
+                                        gridTemplateColumns: "repeat(2, 1fr)",
+                                        gap: "24px",
+                                    }}>
+                                    {/* ACM Card */}
+                                    <div
+                                        className="module-card fade-in"
+                                        style={{ animationDelay: "0.1s" }}>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: "12px",
+                                                margin: "18px 0 12px",
+                                            }}>
+                                            <svg
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="#c8ff00"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round">
+                                                <polyline points="4 17 10 11 4 5" />
+                                                <line
+                                                    x1="12"
+                                                    y1="19"
+                                                    x2="20"
+                                                    y2="19"
+                                                />
+                                            </svg>
+                                            <span
+                                                style={{
+                                                    fontFamily:
+                                                        "'Orbitron', monospace",
+                                                    fontSize:
+                                                        "clamp(16px, 2.5vw, 22px)",
+                                                    fontWeight: 700,
+                                                    color: "#fff",
+                                                }}>
+                                                ACM CONTEST
+                                            </span>
+                                        </div>
+                                        <p
+                                            style={{
+                                                fontFamily:
+                                                    "'JetBrains Mono', monospace",
+                                                fontSize: "12px",
+                                                color: "#666",
+                                                lineHeight: 1.8,
+                                            }}>
+                                            Algorithmic warfare. Brute-force
+                                            your brain. Solve impossible
+                                            problems under impossible pressure.
+                                            Individual or team — no mercy either
+                                            way.
+                                        </p>
+                                        <DifficultyBar
+                                            level={4}
+                                            max={5}
+                                            cyan={false}
+                                        />
+                                        <div
+                                            style={{
+                                                marginTop: "14px",
+                                                display: "flex",
+                                                gap: "6px",
+                                            }}>
+                                            <span className="tag tag-lime">
+                                                LANGUAGE::ANY
+                                            </span>
+                                            <span className="tag tag-lime">
+                                                1 PERSON
+                                            </span>
+                                        </div>
+                                        <LockedButton cyan={false} />
+                                    </div>
+
+                                    {/* Ideathon Card */}
+                                    <div
+                                        className="module-card cyan-variant fade-in"
+                                        style={{ animationDelay: "0.25s" }}>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                gap: "12px",
+                                                margin: "18px 0 12px",
+                                            }}>
+                                            <svg
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="#00ffff"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round">
+                                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+                                            </svg>
+                                            <span
+                                                style={{
+                                                    fontFamily:
+                                                        "'Orbitron', monospace",
+                                                    fontSize:
+                                                        "clamp(16px, 2.5vw, 22px)",
+                                                    fontWeight: 700,
+                                                    color: "#fff",
+                                                }}>
+                                                IDEATHON
+                                            </span>
+                                        </div>
+                                        <p
+                                            style={{
+                                                fontFamily:
+                                                    "'JetBrains Mono', monospace",
+                                                fontSize: "12px",
+                                                color: "#666",
+                                                lineHeight: 1.8,
+                                            }}>
+                                            Hardware &amp; Software chaos in one
+                                            arena. Prototype, break things, fix
+                                            them, ship it. Judged on raw
+                                            innovation, execution velocity, and
+                                            pure audacity.
+                                        </p>
+                                        <DifficultyBar
+                                            level={5}
+                                            max={5}
+                                            cyan={true}
+                                        />
+                                        <div
+                                            style={{
+                                                marginTop: "14px",
+                                                display: "flex",
+                                                gap: "6px",
+                                            }}>
+                                            <span className="tag tag-cyan">
+                                                TEAM::2–5
+                                            </span>
+                                        </div>
+                                        <LockedButton cyan={true} />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* ══ FINAL CTA ═════════════════════════════════════════ */}
+                        <section
+                            style={{
+                                padding: "clamp(48px, 7vw, 96px) 20px",
+                                textAlign: "center",
+                                position: "relative",
+                            }}>
+                            <Corners color="#c8ff00" />
+                            <h3
+                                style={{
+                                    fontFamily: "'Orbitron', monospace",
+                                    fontWeight: 900,
+                                    fontSize: "clamp(22px, 4vw, 44px)",
+                                    color: "#e0e0e0",
+                                    marginBottom: "16px",
+                                }}>
+                                ARE YOU <span className="neon-text">GEEK</span>{" "}
+                                ENOUGH?
+                            </h3>
+                            <p style={{ color: "#555" }}>
+                                SDU University × TechnoPark
+                            </p>
+                        </section>
+                    </div>
+                );
+            }
+
+            ReactDOM.render(<App />, document.getElementById("root"));
+        </script>
+    </body>
+</html>
