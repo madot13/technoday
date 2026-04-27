@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>TECHNODAY — 06.05.2026</title>
+        <title>TECHNODAY — 02.05.2026</title>
         <link
             href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Orbitron:wght@700;900&display=swap"
             rel="stylesheet" />
@@ -523,7 +523,7 @@
                 );
             }
 
-            /* Digital clock showing 06 : 05 : 2026 */
+            /* Digital clock showing 02 : 05 : 2026 */
             function DigitBlock({ value, label }) {
                 return (
                     <div style={{ textAlign: "center" }}>
@@ -566,7 +566,7 @@
                             gap: "12px",
                             margin: "28px 0 10px",
                         }}>
-                        <DigitBlock value="06" label="DAY" />
+                        <DigitBlock value="02" label="DAY" />
                         <span
                             style={{
                                 fontFamily: "'Orbitron', monospace",
@@ -682,7 +682,47 @@
                 );
             }
 
-            function LockedButton({ cyan = false }) {
+            function ActionButton({ cyan = false, url = null }) {
+                const isLocked = !url;
+
+                const buttonContent = (
+                    <>
+                        <span
+                            style={{
+                                marginRight: "8px",
+                                animation: isLocked
+                                    ? "lockPulse 1.6s ease-in-out infinite"
+                                    : "none",
+                                display: "inline-block",
+                                fontSize: "12px",
+                            }}>
+                            {isLocked ? "⬡" : "⬢"}
+                        </span>
+                        {isLocked ? "[REGISTRATION]" : "[REGISTRATION]"}
+                    </>
+                );
+
+                const baseStyle = {
+                    display: "block",
+                    width: "100%",
+                    padding: "13px 20px",
+                    background: isLocked
+                        ? "#17171768"
+                        : cyan
+                          ? "#00ffff15"
+                          : "#c8ff0015",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "11px",
+                    fontWeight: "500",
+                    letterSpacing: "0.06em",
+                    border: `1px solid ${isLocked ? "#2a2a2a" : cyan ? "#00ffff66" : "#c8ff0066"}`,
+                    color: isLocked ? "#444" : cyan ? "#00ffff" : "#c8ff00",
+                    textAlign: "center",
+                    textDecoration: "none",
+                    transition: "all 0.3s ease",
+                    cursor: isLocked ? "not-allowed" : "pointer",
+                };
+
                 return (
                     <div style={{ marginTop: "24px" }}>
                         <div
@@ -695,21 +735,23 @@
                             }}>
                             REGISTRATION::PORTAL
                         </div>
-                        <button
-                            className={`locked-btn${cyan ? " cyan-variant" : ""}`}
-                            disabled>
-                            <span
-                                style={{
-                                    marginRight: "8px",
-                                    animation:
-                                        "lockPulse 1.6s ease-in-out infinite",
-                                    display: "inline-block",
-                                    fontSize: "12px",
-                                }}>
-                                ⬡
-                            </span>
-                            [ ACCESS_DENIED: FORM_OFFLINE ]
-                        </button>
+                        {isLocked ? (
+                            <button
+                                style={baseStyle}
+                                className={`locked-btn${cyan ? " cyan-variant" : ""}`}
+                                disabled>
+                                {buttonContent}
+                            </button>
+                        ) : (
+                            <a
+                                href={url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                style={baseStyle}
+                                className="fade-in">
+                                {buttonContent}
+                            </a>
+                        )}
                     </div>
                 );
             }
@@ -752,6 +794,34 @@
             ───────────────────────────────────────── */
 
             function App() {
+                const schedule = [
+                    {
+                        time: "09:30",
+                        task: "REGISTRATION",
+                        desc: "Check-in and loadout setup.",
+                    },
+                    {
+                        time: "10:00",
+                        task: "OPENING_CEREMONY",
+                        desc: "System boot and mission briefing.",
+                    },
+                    {
+                        time: "10:15",
+                        task: "SOLVING_PHASE_START",
+                        desc: "Logic engines active. Coding in progress.",
+                    },
+                    {
+                        time: "15:00",
+                        task: "PRESENTATION",
+                        desc: "End of solving. Pitching solutions.",
+                    },
+                    {
+                        time: "16:30",
+                        task: "CLOSING_CEREMONY",
+                        desc: "Final broadcast and victory lap.",
+                    },
+                ];
+
                 return (
                     <div className="grid-bg" style={{ minHeight: "100vh" }}>
                         <Scanlines />
@@ -760,14 +830,12 @@
                         <section
                             style={{
                                 position: "relative",
-                                padding:
-                                    "clamp(48px, 9vw, 110px) clamp(20px, 6vw, 80px) clamp(40px, 6vw, 72px)",
+                                padding: "clamp(48px, 9vw, 110px) 20px",
                                 textAlign: "center",
                                 borderBottom: "1px solid #c8ff0018",
                                 overflow: "hidden",
                             }}>
                             <Corners color="#c8ff00" />
-
                             <div
                                 aria-hidden="true"
                                 style={{
@@ -782,7 +850,6 @@
                                 }}
                             />
 
-                            {/* Badges */}
                             <div
                                 style={{
                                     display: "flex",
@@ -799,7 +866,6 @@
                                 </span>
                             </div>
 
-                            {/* THE MISSING HERO TEXT IS BACK HERE */}
                             <div
                                 className="glitch-wrap fade-in"
                                 data-text="TECHNODAY 6"
@@ -818,52 +884,34 @@
                                     TECHNODAY 6
                                 </h1>
                             </div>
-
                             <DigitalClock />
                         </section>
 
-                        {/* ══ CHALLENGES ════════════════════════════════════════ */}
+                        {/* ══ SECTION 01: MISSIONS ══════════════════════════════ */}
                         <section
-                            style={{
-                                padding:
-                                    "clamp(40px, 6vw, 80px) clamp(20px, 6vw, 80px)",
-                                borderBottom: "1px solid #c8ff0010",
-                            }}>
+                            style={{ padding: "clamp(40px, 6vw, 80px) 20px" }}>
                             <div
                                 style={{
-                                    maxWidth: "1020px",
+                                    maxWidth: "1200px",
                                     margin: "0 auto",
                                 }}>
-                                <h2
-                                    style={{
-                                        fontFamily: "'Orbitron', monospace",
-                                        fontWeight: 700,
-                                        fontSize: "clamp(24px, 4.5vw, 50px)",
-                                        color: "#e0e0e0",
-                                        marginBottom: "36px",
-                                        letterSpacing: "0.04em",
-                                    }}>
-                                    {"> SELECT "}
-                                    <span className="neon-text">MISSION</span>
-                                </h2>
+                                <div className="section-header-row"></div>
 
                                 <div
                                     className="challenges-grid"
                                     style={{
                                         display: "grid",
-                                        gridTemplateColumns: "repeat(2, 1fr)",
+                                        gridTemplateColumns:
+                                            "repeat(auto-fit, minmax(320px, 1fr))",
                                         gap: "24px",
                                     }}>
-                                    {/* ACM Card */}
-                                    <div
-                                        className="module-card fade-in"
-                                        style={{ animationDelay: "0.1s" }}>
+                                    <div className="module-card fade-in">
                                         <div
                                             style={{
                                                 display: "flex",
                                                 alignItems: "center",
                                                 gap: "12px",
-                                                margin: "18px 0 12px",
+                                                margin: "18px 0",
                                             }}>
                                             <svg
                                                 width="24"
@@ -871,9 +919,7 @@
                                                 viewBox="0 0 24 24"
                                                 fill="none"
                                                 stroke="#c8ff00"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round">
+                                                strokeWidth="2">
                                                 <polyline points="4 17 10 11 4 5" />
                                                 <line
                                                     x1="12"
@@ -886,59 +932,44 @@
                                                 style={{
                                                     fontFamily:
                                                         "'Orbitron', monospace",
-                                                    fontSize:
-                                                        "clamp(16px, 2.5vw, 22px)",
+                                                    fontSize: "20px",
                                                     fontWeight: 700,
                                                     color: "#fff",
                                                 }}>
-                                                ACM CONTEST
+                                                JANA POST CONTEST
                                             </span>
                                         </div>
                                         <p
                                             style={{
-                                                fontFamily:
-                                                    "'JetBrains Mono', monospace",
                                                 fontSize: "12px",
                                                 color: "#666",
-                                                lineHeight: 1.8,
+                                                lineHeight: "1.6",
                                             }}>
-                                            Algorithmic warfare. Brute-force
-                                            your brain. Solve impossible
-                                            problems under impossible pressure.
-                                            Individual or team — no mercy either
-                                            way.
+                                            Algorithmic warfare. Solve
+                                            impossible problems under pressure.
                                         </p>
-                                        <DifficultyBar
-                                            level={4}
-                                            max={5}
-                                            cyan={false}
-                                        />
-                                        <div
-                                            style={{
-                                                marginTop: "14px",
-                                                display: "flex",
-                                                gap: "6px",
-                                            }}>
+                                        <DifficultyBar level={4} />
+                                        <div style={{ marginTop: "14px" }}>
                                             <span className="tag tag-lime">
                                                 LANGUAGE::ANY
-                                            </span>
+                                            </span>{" "}
                                             <span className="tag tag-lime">
                                                 1 PERSON
                                             </span>
                                         </div>
-                                        <LockedButton cyan={false} />
+                                        <ActionButton
+                                            cyan={false}
+                                            url="https://forms.gle/8eTma6ePkaBtr5t36"
+                                        />
                                     </div>
 
-                                    {/* Ideathon Card */}
-                                    <div
-                                        className="module-card cyan-variant fade-in"
-                                        style={{ animationDelay: "0.25s" }}>
+                                    <div className="module-card cyan-variant fade-in">
                                         <div
                                             style={{
                                                 display: "flex",
                                                 alignItems: "center",
                                                 gap: "12px",
-                                                margin: "18px 0 12px",
+                                                margin: "18px 0",
                                             }}>
                                             <svg
                                                 width="24"
@@ -946,17 +977,14 @@
                                                 viewBox="0 0 24 24"
                                                 fill="none"
                                                 stroke="#00ffff"
-                                                strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round">
+                                                strokeWidth="2">
                                                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
                                             </svg>
                                             <span
                                                 style={{
                                                     fontFamily:
                                                         "'Orbitron', monospace",
-                                                    fontSize:
-                                                        "clamp(16px, 2.5vw, 22px)",
+                                                    fontSize: "20px",
                                                     fontWeight: 700,
                                                     color: "#fff",
                                                 }}>
@@ -965,47 +993,222 @@
                                         </div>
                                         <p
                                             style={{
-                                                fontFamily:
-                                                    "'JetBrains Mono', monospace",
                                                 fontSize: "12px",
                                                 color: "#666",
-                                                lineHeight: 1.8,
+                                                lineHeight: "1.6",
                                             }}>
-                                            Hardware &amp; Software chaos in one
-                                            arena. Prototype, break things, fix
-                                            them, ship it. Judged on raw
-                                            innovation, execution velocity, and
-                                            pure audacity.
+                                            Hardware & Software chaos. Build
+                                            things, break things, fix them.
                                         </p>
-                                        <DifficultyBar
-                                            level={5}
-                                            max={5}
-                                            cyan={true}
-                                        />
-                                        <div
-                                            style={{
-                                                marginTop: "14px",
-                                                display: "flex",
-                                                gap: "6px",
-                                            }}>
+                                        <DifficultyBar level={5} cyan />
+                                        <div style={{ marginTop: "14px" }}>
                                             <span className="tag tag-cyan">
-                                                TEAM::2–5
+                                                TEAM::2–4
                                             </span>
                                         </div>
-                                        <LockedButton cyan={true} />
+                                        <ActionButton
+                                            cyan={true}
+                                            url="https://docs.google.com/forms/d/e/1FAIpQLSfy70rBUL40-pvjmJjmbGEiPNpABSmH3Zi8eG83Li_A5n6YsQ/viewform?usp=dialog"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        {/* ══ SECTION 02: RESPONSIVE PROGRAM (CYAN COLORWAY) ══════════════════ */}
+                        <section
+                            style={{
+                                padding: "80px 20px",
+                                background:
+                                    "#00ffff05" /* Faint Cyan glow for section bg */,
+                            }}>
+                            <div
+                                style={{
+                                    maxWidth: "1200px",
+                                    margin: "0 auto",
+                                }}>
+                                <div
+                                    className="section-header-row"
+                                    style={{ borderBottomColor: "#00ffff33" }}>
+                                    <span
+                                        className="section-num"
+                                        style={{ color: "#222" }}>
+                                        SECTION::02
+                                    </span>
+                                    <div
+                                        className="line"
+                                        style={{
+                                            background:
+                                                "linear-gradient(90deg, #00ffff33, transparent)",
+                                        }}
+                                    />
+                                    <span
+                                        className="section-status"
+                                        style={{
+                                            color: "#00ffff",
+                                            textShadow: "0 0 8px #00ffff55",
+                                        }}>
+                                        TIMELINE_ADAPTIVE_VIEW
+                                    </span>
+                                </div>
+
+                                <div
+                                    className="module-card cyan-variant fade-in"
+                                    style={{
+                                        background: "#00ffff0a",
+                                        borderColor: "#00ffff33",
+                                        padding: "40px",
+                                    }}>
+                                    <style>{`
+                                        /* Desktop: Horizontal */
+                                        .timeline-container {
+                                            display: flex;
+                                            flex-direction: row;
+                                            justify-content: space-between;
+                                        }
+                                        .timeline-item {
+                                            flex: 1;
+                                            border-top: 1px solid #00ffff33;
+                                            padding-top: 15px;
+                                            position: relative;
+                                        }
+                                        .node-dot {
+                                            top: -6px;
+                                            left: 0;
+                                        }
+
+                                        /* Mobile/Tablet: Vertical */
+                                        @media (max-width: 1024px) {
+                                            .timeline-container {
+                                                flex-direction: column;
+                                                gap: 30px;
+                                            }
+                                            .timeline-item {
+                                                border-top: none;
+                                                border-left: 1px solid #00ffff33;
+                                                padding-top: 0;
+                                                padding-left: 20px;
+                                            }
+                                            .node-dot {
+                                                top: 0;
+                                                left: -6px;
+                                            }
+                                        }
+                                    `}</style>
+
+                                    <Corners color="#00ffff" />
+
+                                    {/* Headline with Icon */}
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: "12px",
+                                            margin: "0 0 40px 0",
+                                        }}>
+                                        <svg
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="#00ffff"
+                                            strokeWidth="2">
+                                            <rect
+                                                x="3"
+                                                y="4"
+                                                width="18"
+                                                height="18"
+                                                rx="2"
+                                                ry="2"
+                                            />
+                                            <line
+                                                x1="16"
+                                                y1="2"
+                                                x2="16"
+                                                y2="6"
+                                            />
+                                            <line x1="8" y1="2" x2="8" y2="6" />
+                                            <line
+                                                x1="3"
+                                                y1="10"
+                                                x2="21"
+                                                y2="10"
+                                            />
+                                        </svg>
+                                        <span
+                                            style={{
+                                                fontFamily:
+                                                    "'Orbitron', monospace",
+                                                fontSize: "24px",
+                                                fontWeight: 700,
+                                                color: "#fff",
+                                                letterSpacing: "0.1em",
+                                            }}>
+                                            PROGRAM
+                                        </span>
+                                    </div>
+
+                                    <div className="timeline-container">
+                                        {schedule.map((item, index) => (
+                                            <div
+                                                key={index}
+                                                className="timeline-item">
+                                                {/* The Node Dot */}
+                                                <div
+                                                    className="node-dot"
+                                                    style={{
+                                                        position: "absolute",
+                                                        width: "11px",
+                                                        height: "11px",
+                                                        background: "#00ffff",
+                                                        boxShadow:
+                                                            "0 0 10px #00ffff",
+                                                    }}
+                                                />
+
+                                                <div
+                                                    style={{
+                                                        fontFamily:
+                                                            "'Orbitron', monospace",
+                                                        fontSize: "18px",
+                                                        color: "#00ffff",
+                                                        fontWeight: "900",
+                                                    }}>
+                                                    {item.time}
+                                                </div>
+                                                <div
+                                                    style={{
+                                                        fontSize: "11px",
+                                                        fontWeight: "800",
+                                                        color: "#eee",
+                                                        letterSpacing: "0.1em",
+                                                        marginTop: "5px",
+                                                    }}>
+                                                    {item.task}
+                                                </div>
+                                                <div
+                                                    style={{
+                                                        fontSize: "10px",
+                                                        color: "#555",
+                                                        marginTop: "4px",
+                                                        lineHeight: "1.4",
+                                                    }}>
+                                                    {item.desc}
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
                         </section>
 
                         {/* ══ FINAL CTA ═════════════════════════════════════════ */}
-                        <section
+                        <footer
                             style={{
-                                padding: "clamp(48px, 7vw, 96px) 20px",
+                                padding: "80px 20px",
                                 textAlign: "center",
-                                position: "relative",
+                                borderTop: "1px solid #c8ff0010",
                             }}>
-                            <Corners color="#c8ff00" />
                             <h3
                                 style={{
                                     fontFamily: "'Orbitron', monospace",
@@ -1017,8 +1220,15 @@
                                 ARE YOU <span className="neon-text">GEEK</span>{" "}
                                 ENOUGH?
                             </h3>
-                            <p style={{ color: "#555" }}>Technopark</p>
-                        </section>
+                            <p
+                                style={{
+                                    color: "#333",
+                                    fontSize: "11px",
+                                    letterSpacing: "0.2em",
+                                }}>
+                                TECHNOPARK // 2026
+                            </p>
+                        </footer>
                     </div>
                 );
             }
