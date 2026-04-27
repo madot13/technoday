@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>TECHNODAY — 02.05.2026</title>
+        <title>TECHNODAY - 02.05.2026</title>
         <link
             href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Orbitron:wght@700;900&display=swap"
             rel="stylesheet" />
@@ -472,6 +472,123 @@
                 text-shadow: 0 0 8px #c8ff0055;
             }
 
+            /* ── Partner logos ── */
+            .partners-shell {
+                position: relative;
+                max-width: 780px;
+                margin: 0 auto 22px;
+                padding: 20px;
+                background: linear-gradient(180deg, #121b18cc, #0b0d0ccc);
+                border: 1px solid #c8ff0028;
+                box-shadow:
+                    0 0 30px #c8ff000d,
+                    inset 0 0 24px #c8ff0008;
+                overflow: hidden;
+            }
+
+            .partners-shell::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 20px;
+                right: 20px;
+                height: 1px;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    #c8ff0099,
+                    transparent
+                );
+            }
+
+            .partners-title {
+                margin-bottom: 16px;
+                font-family: "JetBrains Mono", monospace;
+                font-size: 10px;
+                color: #555;
+                letter-spacing: 0.24em;
+                text-align: center;
+            }
+
+            .partners-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 14px;
+            }
+
+            .partner-card {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 16px;
+                min-height: 104px;
+                padding: 14px;
+                background: transparent;
+                border: 1px solid #c8ff0024;
+            }
+
+            .partner-card:nth-child(2) {
+                border-color: #00ffff24;
+            }
+
+            .partner-meta {
+                min-width: 0;
+                text-align: left;
+            }
+
+            .partner-label {
+                font-family: "JetBrains Mono", monospace;
+                font-size: 10px;
+                color: #c8ff00;
+                letter-spacing: 0.22em;
+                text-shadow: 0 0 8px #c8ff0055;
+            }
+
+            .partner-card:nth-child(2) .partner-label {
+                color: #00ffff;
+                text-shadow: 0 0 8px #00ffff55;
+            }
+
+            .partner-name {
+                margin-top: 8px;
+                font-family: "Orbitron", monospace;
+                font-size: 14px;
+                font-weight: 900;
+                line-height: 1.15;
+                color: #e8e8e8;
+                letter-spacing: 0.08em;
+            }
+
+            .partner-logo-box {
+                flex: 0 0 auto;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+                background: transparent;
+                border: 0;
+                box-shadow: none;
+                line-height: 0;
+            }
+
+            .partner-logo-box img {
+                width: auto;
+                height: 76px;
+                max-width: 128px;
+                object-fit: contain;
+                display: block;
+            }
+
+            .partner-logo-placeholder {
+                color: #171717;
+                font-family: "Orbitron", monospace;
+                font-size: 12px;
+                font-weight: 900;
+                line-height: 1.35;
+                letter-spacing: 0.08em;
+                text-align: center;
+            }
+
             /* ── Scrollbar ── */
             ::-webkit-scrollbar {
                 width: 4px;
@@ -491,6 +608,14 @@
             @media (max-width: 600px) {
                 .challenges-grid {
                     grid-template-columns: 1fr !important;
+                }
+
+                .partners-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .partner-card {
+                    min-height: 96px;
                 }
             }
         </style>
@@ -789,6 +914,21 @@
                 },
             ];
 
+            const PARTNERS = [
+                {
+                    label: "ORGANIZER",
+                    name: "TECHNOPARK SDU",
+                    image: "img/assets/logo-clean.png",
+                    fallback: "ORGANIZER LOGO",
+                },
+                {
+                    label: "SPONSOR",
+                    name: "JANA POST",
+                    image: "img/assets/JanaPost.svg",
+                    fallback: "SPONSOR LOGO",
+                },
+            ];
+
             /* ─────────────────────────────────────────
                Main Page
             ───────────────────────────────────────── */
@@ -868,7 +1008,7 @@
 
                             <div
                                 className="glitch-wrap fade-in"
-                                data-text="TECHNODAY 6"
+                                data-text="TECHNODAY"
                                 style={{ display: "inline-block" }}>
                                 <h1
                                     style={{
@@ -881,7 +1021,7 @@
                                         position: "relative",
                                         zIndex: 2,
                                     }}>
-                                    TECHNODAY 6
+                                    TECHNODAY
                                 </h1>
                             </div>
                             <DigitalClock />
@@ -948,7 +1088,7 @@
                                             Algorithmic warfare. Solve
                                             impossible problems under pressure.
                                         </p>
-                                        <DifficultyBar level={4} />
+                                        <DifficultyBar level={5} />
                                         <div style={{ marginTop: "14px" }}>
                                             <span className="tag tag-lime">
                                                 LANGUAGE::ANY
@@ -997,8 +1137,7 @@
                                                 color: "#666",
                                                 lineHeight: "1.6",
                                             }}>
-                                            Hardware & Software chaos. Build
-                                            things, break things, fix them.
+                                            Build things, break things, fix them.
                                         </p>
                                         <DifficultyBar level={5} cyan />
                                         <div style={{ marginTop: "14px" }}>
@@ -1144,7 +1283,7 @@
                                                 color: "#fff",
                                                 letterSpacing: "0.1em",
                                             }}>
-                                            PROGRAM
+                                            IDEATHON PROGRAM
                                         </span>
                                     </div>
 
@@ -1202,24 +1341,47 @@
                             </div>
                         </section>
 
-                        {/* ══ FINAL CTA ═════════════════════════════════════════ */}
+                        {/* ══ PARTNERS ═════════════════════════════════════════ */}
                         <footer
                             style={{
-                                padding: "80px 20px",
+                                padding: "52px 20px 62px",
                                 textAlign: "center",
                                 borderTop: "1px solid #c8ff0010",
                             }}>
-                            <h3
-                                style={{
-                                    fontFamily: "'Orbitron', monospace",
-                                    fontWeight: 900,
-                                    fontSize: "clamp(22px, 4vw, 44px)",
-                                    color: "#e0e0e0",
-                                    marginBottom: "16px",
-                                }}>
-                                ARE YOU <span className="neon-text">GEEK</span>{" "}
-                                ENOUGH?
-                            </h3>
+                            <div className="partners-shell">
+                                <Corners color="#c8ff00" />
+                                <div className="partners-title">
+                                    EVENT::PARTNERS
+                                </div>
+                                <div className="partners-grid">
+                                    {PARTNERS.map((partner) => (
+                                        <div
+                                            className="partner-card"
+                                            key={partner.label}>
+                                            <div className="partner-meta">
+                                                <div className="partner-label">
+                                                    {partner.label}
+                                                </div>
+                                                <div className="partner-name">
+                                                    {partner.name}
+                                                </div>
+                                            </div>
+                                            <div className="partner-logo-box">
+                                                {partner.image ? (
+                                                    <img
+                                                        src={partner.image}
+                                                        alt={`${partner.label} logo`}
+                                                    />
+                                                ) : (
+                                                    <div className="partner-logo-placeholder">
+                                                        {partner.fallback}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                             <p
                                 style={{
                                     color: "#333",
